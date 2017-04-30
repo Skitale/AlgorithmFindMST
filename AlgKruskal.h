@@ -46,11 +46,9 @@ int compare_edges(const void *a, const void *b) {
 
 
 void print_msf_edges_kruskal() {
-	if (n < 15){
-		printf("Kruskal MSF edges:\n");
-		for (int i = 0; i < msf_edge_count_kr; i++) {
-			printf("(%d,%d) = %d\n", resultKruskal[i].v, resultKruskal[i].u, resultKruskal[i].weight);
-		}
+	printf("Kruskal MSF edges:\n");
+	for (int i = 0; i < msf_edge_count_kr; i++) {
+		printf("(%d,%d) = %d\n", resultKruskal[i].v, resultKruskal[i].u, resultKruskal[i].weight);
 	}
 }
 

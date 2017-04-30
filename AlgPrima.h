@@ -11,11 +11,9 @@ bool Metka(int *m, int n)
 }
 
 void print_msf_edges_prim() {
-	if (n < 15){
-		printf("Prim MSF edges:\n");
-		for (int i = 0; i < msf_edge_count_pr; i++) {
-			printf("(%d,%d) = %d\n", resultPrim[i].v, resultPrim[i].u, resultPrim[i].weight);
-		}
+	printf("Prim MSF edges:\n");
+	for (int i = 0; i < msf_edge_count_pr; i++) {
+		printf("(%d,%d) = %d\n", resultPrim[i].v, resultPrim[i].u, resultPrim[i].weight);
 	}
 }
 
