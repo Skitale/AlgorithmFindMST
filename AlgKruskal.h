@@ -52,10 +52,10 @@ void print_msf_edges_kruskal() {
 	}
 }
 
-void find_msf_Kruskal() {
+void find_msf_Kruskal(edge_s * edges, int m, double &finTime) {
 
+	resultKruskal = new edge_s[n - 1];
 	msf_edge_count_kr = 0;
-
 
 	/*Сортировка ребер принадлежащих каждому процессу*/
 	std::qsort(edges, m, sizeof(edge_s), compare_edges);
@@ -79,7 +79,10 @@ void find_msf_Kruskal() {
 		}
 	}
 
+	finTime = clock();
+
 	print_msf_edges_kruskal();
+	delete[]resultKruskal;
 }
 
 

@@ -24,8 +24,11 @@ struct u_node {/* Система непересекающихся множеств*/
 
 
 int n;    // Количество вершин в графе 
-int m;       // Количество ребер
-edge_s * edges;     // Массив ребер
+int m;       // Количество ребер в плотном графе
+int sm;  // Количество ребер в разреженном графе
+
+edge_s * edges;     // Массив ребер(плотный)
+edge_s * s_edges; // Массив ребер(разреженный)
 
 edge_s * resultPrim;
 edge_s * resultKruskal;
@@ -35,9 +38,31 @@ u_node * uf_set; /* Массив, указывающий, какая вершина какому множеству принадле
 
 void print_edges() {
 	if (n < 10){
-		printf("Edges:\n");
+		printf("Edges of the dense graph:\n");
 		for (int i = 0; i < m; i++) {
 			printf("(%d,%d) = %d\n", edges[i].v, edges[i].u, edges[i].weight);
+		}
+
+		printf("Edges of the rare graph:\n");
+		for (int i = 0; i < sm; i++) {
+			printf("(%d,%d) = %d\n", s_edges[i].v, s_edges[i].u, s_edges[i].weight);
+		}
+	}
+	else{
+		printf("Show edges of the graph with %d vertices ?\n", n);
+		printf("(Y/N)\n");
+		char simb;
+		cin >> simb;
+		if (simb == 'Y'){
+			printf("Edges of the dense graph:\n");
+			for (int i = 0; i < m; i++) {
+				printf("(%d,%d) = %d\n", edges[i].v, edges[i].u, edges[i].weight);
+			}
+
+			printf("Edges of the rare graph:\n");
+			for (int i = 0; i < sm; i++) {
+				printf("(%d,%d) = %d\n", s_edges[i].v, s_edges[i].u, s_edges[i].weight);
+			}
 		}
 	}
 }
@@ -52,17 +77,24 @@ int EdgeInGraph(int A, int B, int end, edge_s * ed)//есть ли уже такое ребро в г
 }
 
 //генерация ребер в графе (самого графа)
-void GenerateGraph(int n, int m)
+void GenerateGraph(int n, int &m)
 {
+	m = n*2;
 	int weight, v1, v2, fl;
 	bool flag;
 
-	edges = new edge_s[m];
+	if (edges == NULL){
+		edges = new edge_s[m];
+	}
+	else {
+		delete[]edges;
+		edges = new edge_s[m];
+	}
 
 	//делаем граф связным
 	for (int i = 0; i<n - 1; i++)
 	{
-		weight = rand() % 50 + 1;
+		weight = rand() % 100 + 1;
 		edges[i] = { i, i + 1, weight };
 	}
 	for (int i = n - 1; i<m; i++)
@@ -75,23 +107,74 @@ void GenerateGraph(int n, int m)
 			v2 = v1;
 			while (v2 == v1)
 				v2 = rand() % n;
-			weight = rand() % 50 + 1;
+			weight = rand() % 100 + 1;
 			fl = EdgeInGraph(v1, v2, i, edges);
 			if (fl == -1) flag = true;
 			else sl++;
-			if (sl>5)
+			if (sl>2)
 			{
 				sl = 0;
-				v1 = rand() % n + 1;
+				v1 = rand() % n;
 			}
 		}
 		edges[i] = { v1, v2, weight };
 	}
 }
 
+void GenerateSparseGraph(int n, int &m){
+	m = n;
+	int weight, v1, v2, fl;
+	bool flag;
+
+	if (s_edges == NULL){
+		s_edges = new edge_s[m];
+	}
+	else {
+		delete[]s_edges;
+		s_edges = new edge_s[m];
+	}
+
+	//делаем граф связным
+	for (int i = 0; i<n - 1; i++)
+	{
+		weight = rand() % 100 + 1;
+		s_edges[i] = { i, i + 1, weight };
+	}
+	for (int i = n - 1; i<m; i++)
+	{
+		int sl = 0;
+		v1 = rand() % n;
+		flag = false;
+		while (flag == false)
+		{
+			v2 = v1;
+			while (v2 == v1)
+				v2 = rand() % n;
+			weight = rand() % 100 + 1;
+			fl = EdgeInGraph(v1, v2, i, s_edges);
+			if (fl == -1) flag = true;
+			else sl++;
+			if (sl>1)
+			{
+				sl = 0;
+				v1 = rand() % n;
+			}
+		}
+		s_edges[i] = { v1, v2, weight };
+	}
+}
+
+edge_s * createClone(edge_s * ed, int m){
+	edge_s * tmp_edges = new edge_s[m];
+	for (int i = 0; i < m; i++){
+		tmp_edges[i] = ed[i];
+	}
+
+	return tmp_edges;
+}
+
 void finalize() {
 	delete[]uf_set;
 	delete[]edges;
-	delete[]resultPrim;
-	delete[]resultKruskal;
+	delete[]s_edges;
 }

@@ -17,7 +17,10 @@ void print_msf_edges_prim() {
 	}
 }
 
-void find_msf_Prim() {
+void find_msf_Prim(edge_s * edges, int m, double &finTime) {
+
+	resultPrim = new edge_s[n - 1];
+	msf_edge_count_pr = 0;
 
 	int a, b = 0;
 	int* mlin = new int[n];
@@ -45,6 +48,9 @@ void find_msf_Prim() {
 		resultPrim[msf_edge_count_pr++] = { edges[index].v, edges[index].u, edges[index].weight };
 	}
 
+	finTime = clock();
+
 	print_msf_edges_prim();
+	delete[]resultPrim;
 }
 
