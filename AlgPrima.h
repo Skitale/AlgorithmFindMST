@@ -3,10 +3,10 @@
 
 int msf_edge_count_pr;  /* Количество ребер в массиве ребер MSF Prim*/
 
-bool Metka(int *m, int n)
+bool check_label(int *label, int size)
 {
-	for(int i=0; i<n; i++)
-		if(m[i]==0) return true;
+	for (int i = 0; i < size; i++)
+		if(label[i] == 0) return true;
 	return false;
 }
 
@@ -23,33 +23,33 @@ void find_msf_Prim(edge_s * edges, int m, double &finTime) {
 	msf_edge_count_pr = 0;
 
 	int a, b = 0;
-	int* mlin = new int[n];
+	int* label = new int[n];
 	for (int i = 1; i<n; i++)
-		mlin[i] = 0;
-	mlin[0] = 1;//начинаем с 0 вершины
+		label[i] = 0;
+	label[0] = 1;//начинаем с 0 вершины
 	int index = 0;
-	while (Metka(mlin, n))
+	while (check_label(label, n))
 	{
 		int minWeight = INT_MAX;
 		for (int i = 0; i<m; i++)
 		{
 			a = edges[i].v;
 			b = edges[i].u;
-			if ((mlin[a] == 1 && mlin[b] == 0) || (mlin[a] == 0 && mlin[b] == 1))
+			if ((label[a] == 1 && label[b] == 0) || (label[a] == 0 && label[b] == 1))
 				if (edges[i].weight < minWeight)
 				{
 					index = i;
 					minWeight = edges[i].weight;
 				}
-
 		}
-		mlin[edges[index].v] = 1;
-		mlin[edges[index].u] = 1;
+		label[edges[index].v] = 1;
+		label[edges[index].u] = 1;
 		resultPrim[msf_edge_count_pr++] = { edges[index].v, edges[index].u, edges[index].weight };
 	}
 
 	finTime = clock();
-
+	
+	std::qsort(resultPrim, n - 1, sizeof(edge_s), compare_edges);
 	print_msf_edges_prim();
 	delete[]resultPrim;
 }

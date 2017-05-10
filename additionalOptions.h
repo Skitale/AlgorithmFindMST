@@ -94,7 +94,7 @@ void GenerateGraph(int n, int &m)
 	//הוכאול דנאפ סגÿחםûל
 	for (int i = 0; i<n - 1; i++)
 	{
-		weight = rand() % 100 + 1;
+		weight = rand() % n + 1;
 		edges[i] = { i, i + 1, weight };
 	}
 	for (int i = n - 1; i<m; i++)
@@ -107,7 +107,7 @@ void GenerateGraph(int n, int &m)
 			v2 = v1;
 			while (v2 == v1)
 				v2 = rand() % n;
-			weight = rand() % 100 + 1;
+			weight = rand() % n + 1;
 			fl = EdgeInGraph(v1, v2, i, edges);
 			if (fl == -1) flag = true;
 			else sl++;
@@ -137,7 +137,7 @@ void GenerateSparseGraph(int n, int &m){
 	//הוכאול דנאפ סגÿחםûל
 	for (int i = 0; i<n - 1; i++)
 	{
-		weight = rand() % 100 + 1;
+		weight = rand() % n + 1;
 		s_edges[i] = { i, i + 1, weight };
 	}
 	for (int i = n - 1; i<m; i++)
@@ -150,7 +150,7 @@ void GenerateSparseGraph(int n, int &m){
 			v2 = v1;
 			while (v2 == v1)
 				v2 = rand() % n;
-			weight = rand() % 100 + 1;
+			weight = rand() % n + 1;
 			fl = EdgeInGraph(v1, v2, i, s_edges);
 			if (fl == -1) flag = true;
 			else sl++;
@@ -164,14 +164,6 @@ void GenerateSparseGraph(int n, int &m){
 	}
 }
 
-edge_s * createClone(edge_s * ed, int m){
-	edge_s * tmp_edges = new edge_s[m];
-	for (int i = 0; i < m; i++){
-		tmp_edges[i] = ed[i];
-	}
-
-	return tmp_edges;
-}
 
 void finalize() {
 	delete[]uf_set;
