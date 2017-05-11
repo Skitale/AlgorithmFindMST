@@ -80,9 +80,10 @@ void find_msf_Kruskal(edge_s * edges, int m, double &finTime) {
 	}
 
 	finTime = clock();
-
-	print_msf_edges_kruskal();
+	printf("done! ");
+	//print_msf_edges_kruskal();
 	delete[]resultKruskal;
+	delete[]uf_set;
 }
 
 
