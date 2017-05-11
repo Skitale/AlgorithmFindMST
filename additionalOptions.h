@@ -57,11 +57,10 @@ void print_edges() {
 		}
 	}
 	else{
-		printf("Show edges of the graph with %d vertices ?", n);
-		printf("(Y/N)\n");
+		printf("Show edges of the graph with %d vertices ? (Y/N)\n", n);
 		char simb;
 		cin >> simb;
-		if (simb == 'Y'){
+		if (simb == 'Y' || simb == 'y'){
 			printf("Edges of the dense graph:\n");
 			for (int i = 0; i < m; i++) {
 				printf("(%d,%d) = %d\n", edges[i].v, edges[i].u, edges[i].weight);
@@ -265,7 +264,8 @@ void generateRareGraph(int n, int &m){
 	//}
 
 }
-void generateSparseGraph(int n, int &m){
+
+void generateSparseGraph(int n, int &m){ // function has become outdated
 	m = n;
 	int weight, v1, v2, fl;
 	bool flag;
