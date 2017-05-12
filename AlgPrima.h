@@ -3,7 +3,7 @@
 
 int msf_edge_count_pr;  /* Количество ребер в массиве ребер MSF Prim*/
 
-bool check_label(int *label, int size)
+inline bool check_label(int *label, int size)
 {
 	for (int i = 0; i < size; i++)
 		if(label[i] == 0) return true;
