@@ -5,15 +5,15 @@
 #include <time.h>
 using namespace std;
 
-struct edge_s {    /* структура, представляющая одно ребро*/
+struct edge_s {  // Structure representing a edge
 	int v;
 	int u;
 	int weight;
 };
 
 
-struct u_node {/* Система непересекающихся множеств*/
-	u_node * parent;
+struct u_node { // disjoint-set
+ 	u_node * parent;
 	int depth;
 
 	u_node(){
@@ -23,9 +23,9 @@ struct u_node {/* Система непересекающихся множеств*/
 };
 
 
-int n;    // Количество вершин в графе 
-int m;       // Количество ребер в плотном графе
-int sm;  // Количество ребер в разреженном графе
+int n;   // Number of vertices in the main graph 
+int m;   //Number of edges in the dense graph
+int sm;  //Number of edges in the rare graph
 
 
 
@@ -35,16 +35,40 @@ edge_s * resultKruskal;
 edge_s * resultBoruvka;
 
 
-edge_s * s_edges; // Массив ребер(разреженный)
-int ** s_weightMatr;
-bool ** s_connectivityMatr; // матрица смежности
+edge_s * s_edges; // Array of edges(Rarefied)
+int ** s_weightMatr; // Array of wight
+bool ** s_connectivityMatr; // Adjacency matrix
 
-edge_s * edges;     // Массив ребер(плотный)
-int ** weightMatr;
-bool ** connectivityMatr; // матрица смежности
+edge_s * edges;     // Array of edges(Dense)
+int ** weightMatr; // Array of wight
+bool ** connectivityMatr; // Adjacency matrix
 
-u_node * uf_set; /* Массив, указывающий, какая вершина какому множеству принадлежит. */
+u_node * uf_set; // Array of node for disjoint-set 
 
+//uf
+void uf_make() {
+	int size = n;// + (number_of_vertices - 1);
+	uf_set = new u_node[size];
+	memset(uf_set, 0, size * sizeof(u_node));
+}
+
+u_node * uf_find(u_node * a) {
+	if (a->parent == NULL) return a;
+	else return (a->parent = uf_find(a->parent));
+}
+
+void uf_union(u_node * a, u_node * b) {
+	if (a->depth > b->depth) {
+		b->parent = a;
+	}
+	else if (a->depth<b->depth) {
+		a->parent = b;
+	}
+	else {
+		a->parent = b;
+		a->depth += 1;
+	}
+}
 
 void print_edges() {
 	if (n < 10){
@@ -76,7 +100,7 @@ void print_edges() {
 	}
 }
 
-int EdgeInGraph(int A, int B, int end, edge_s * ed)//есть ли уже такое ребро в графе
+int EdgeInGraph(int A, int B, int end, edge_s * ed)//is Exits of edge
 {
 
 	for (int i = 0; i<end; i++)
@@ -85,7 +109,7 @@ int EdgeInGraph(int A, int B, int end, edge_s * ed)//есть ли уже такое ребро в г
 	return -1;
 }
 
-//генерация ребер в графе
+//generate edges of graph
 void generateDenseGraph(int n, int &m){
 	int activ_m = 0;
 	int weight = 0;
@@ -319,27 +343,3 @@ void finalize() {
 	delete[]s_edges;
 }
 
-//uf
-void uf_make() {
-	int size = n;// + (number_of_vertices - 1);
-	uf_set = new u_node[size];
-	memset(uf_set, 0, size * sizeof(u_node));
-}
-
-u_node * uf_find(u_node * a) {
-	if (a->parent == NULL) return a;
-	else return (a->parent = uf_find(a->parent));
-}
-
-void uf_union(u_node * a, u_node * b) {
-	if (a->depth > b->depth) {
-		b->parent = a;
-	}
-	else if (a->depth<b->depth) {
-		a->parent = b;
-	}
-	else {
-		a->parent = b;
-		a->depth += 1;
-	}
-}

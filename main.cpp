@@ -1,4 +1,5 @@
 #pragma once
+//#define DEBUG
 #include "AlgKruskal.h"
 #include "AlgPrima.h"
 #include"AlgBoruvka.h"
@@ -9,13 +10,11 @@ int main() {
 	printf("Enter number of vertices of Graph: ");
 	cin >> n;
 
-
-
 	double tGenDenseG1, tGenGenseG2, tGenRareG1, tGenRareG2;
-	double tDensePrim1, tDensePrim2, tDenseKruskal1, tDenseKruskal2;
+	double tDensePrim1, tDensePrim2, tDenseKruskal1, tDenseKruskal2, tDenseBoruvka1, tDenseBoruvka2;
 	double tRarePrim1, tRarePrim2, tRareKruskal1, tRareKruskal2, tRareBoruvka1, tRareBoruvka2;
 	
-	double dGenDense, dGenRare, dDensePrim, dDenseKruskal, dRarePrim, dRareKruskal;
+	double dGenDense, dGenRare, dDensePrim, dDenseKruskal, dDenseBoruvka, dRarePrim, dRareKruskal, dRareBoruvka;
 
 	tGenRareG1 = clock();
 	generateRareGraph(n, sm);
@@ -24,47 +23,47 @@ int main() {
 	tGenDenseG1 = clock();
 	generateDenseGraph(n, m);
 	tGenGenseG2 = clock();
-	//tGenDenseG1 = clock();
-	//GenerateGraph(n, m);
-	//tGenGenseG2 = clock();
-
 
 	print_edges();
 
 	printf("\n");
 	printf("Search MST Edges of Graph from the dense graph is ");
 
+	// Working Prim alg at Dense Graph
 	tDensePrim1 = clock();
-	//find_msf_Prim(edges, m, tDensePrim2);
-	__test_find_msf_Prim(weightMatr, connectivityMatr, tDensePrim2);
+	find_msf_Prim(weightMatr, connectivityMatr, tDensePrim2);
 
+	// Working Kruskal alg at Dense Graph
 	tDenseKruskal1 = clock();
 	find_msf_Kruskal(edges, m, tDenseKruskal2);
 
+	// Working Boruvka alg at Rare Graph
+	tDenseBoruvka1 = clock();
+	find_msf_Boruvka(edges, m, tDenseBoruvka2);
 
 	printf("\n");
 	printf("Search MST Edges of Graph from the dense graph is ");
 
+	// Working Prim alg at Rare Graph
 	tRarePrim1 = clock();
-	//find_msf_Prim(s_edges, sm, tRarePrim2);
-	__test_find_msf_Prim(s_weightMatr, s_connectivityMatr, tRarePrim2);
+	find_msf_Prim(s_weightMatr, s_connectivityMatr, tRarePrim2);
 
-	//generateSparseGraph(n, sm);
+	// Working Kruskal alg at Rare Graph
 	tRareKruskal1 = clock();
 	find_msf_Kruskal(s_edges, sm, tRareKruskal2);
 
-
-	find_msf_Boruvka(edges,sm,tRareBoruvka2);
+	// Working Boruvka alg at Rare Graph
+	tRareBoruvka1 = clock();
+	find_msf_Boruvka(s_edges, sm, tRareBoruvka2);
 
 	dGenDense = (tGenGenseG2 - tGenDenseG1); dGenRare = (tGenRareG2 - tGenRareG1);
-	dDensePrim = (tDensePrim2 - tDensePrim1); dDenseKruskal = (tDenseKruskal2 - tDenseKruskal1);
-	dRarePrim = (tRarePrim2 - tRarePrim1); dRareKruskal = (tRareKruskal2 - tRareKruskal1);
+	dDensePrim = (tDensePrim2 - tDensePrim1); dDenseKruskal = (tDenseKruskal2 - tDenseKruskal1); dDenseBoruvka = (tDenseBoruvka2 - tDenseBoruvka1);
+	dRarePrim = (tRarePrim2 - tRarePrim1); dRareKruskal = (tRareKruskal2 - tRareKruskal1); dRareBoruvka = (tRareBoruvka2 - tRareBoruvka1);
 
 	printf("\nTime of generation the dense graph %f ms.\nTime of generation the rare graph %f ms.\n", dGenDense, dGenRare);
 
-	printf("Search time MST using alg Prima for the dense graph %f ms.\nSearch time MST using alg kruskal for the dense graph %f ms.\n", dDensePrim, dDenseKruskal);
-	printf("Search time MST using alg Prima for the rare graph %f ms.\nSearch time MST using alg kruskal for the rare graph %f ms.\n", dRarePrim, dRareKruskal);
-
+	printf("Search time MST using alg Prima for the dense graph %f ms.\nSearch time MST using alg Kruskal for the dense graph %f ms.\nSearch time MST using alg Boruvka for the dense graph %f ms.\n", dDensePrim, dDenseKruskal, dDenseBoruvka);
+	printf("Search time MST using alg Prima for the rare graph %f ms.\nSearch time MST using alg Kruskal for the rare graph %f ms.\nSearch time MST using alg Boruvka for the rare graph %f ms.\n", dRarePrim, dRareKruskal, dRareBoruvka);
 
 	finalize();
 	system("pause");
