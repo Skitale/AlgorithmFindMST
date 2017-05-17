@@ -4,30 +4,6 @@
 int msf_edge_count_kr;  /* Количество ребер в массиве ребер MSF Kruskal*/
 
 
-void uf_make(){
-	int size = n;// + (number_of_vertices - 1);
-	uf_set = new u_node[size];
-	memset(uf_set, 0, size * sizeof(u_node));
-}
-u_node * uf_find(u_node * a){
-	if (a->parent == NULL) return a;
-	else return (a->parent = uf_find(a->parent));
-}
-void uf_union(u_node * a, u_node * b){
-	if (a->depth > b->depth) {
-		b->parent = a;
-	}
-	else if (a->depth<b->depth) {
-		a->parent = b;
-	}
-	else {
-		a->parent = b;
-		a->depth += 1;
-	}
-}
-
-
-
 
 int compare_edges(const void *a, const void *b) {
 	edge_s *ea = (edge_s *)a;

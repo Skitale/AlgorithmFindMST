@@ -32,6 +32,8 @@ int sm;  // Количество ребер в разреженном графе
 
 edge_s * resultPrim;
 edge_s * resultKruskal;
+edge_s * resultBoruvka;
+
 
 edge_s * s_edges; // Массив ребер(разреженный)
 int ** s_weightMatr;
@@ -315,4 +317,29 @@ void generateSparseGraph(int n, int &m){ // function has become outdated
 void finalize() {
 	delete[]edges;
 	delete[]s_edges;
+}
+
+//uf
+void uf_make() {
+	int size = n;// + (number_of_vertices - 1);
+	uf_set = new u_node[size];
+	memset(uf_set, 0, size * sizeof(u_node));
+}
+
+u_node * uf_find(u_node * a) {
+	if (a->parent == NULL) return a;
+	else return (a->parent = uf_find(a->parent));
+}
+
+void uf_union(u_node * a, u_node * b) {
+	if (a->depth > b->depth) {
+		b->parent = a;
+	}
+	else if (a->depth<b->depth) {
+		a->parent = b;
+	}
+	else {
+		a->parent = b;
+		a->depth += 1;
+	}
 }
