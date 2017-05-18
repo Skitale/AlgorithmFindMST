@@ -11,20 +11,18 @@ int main() {
 	cin >> n;
 
 	double tGenDenseG1, tGenGenseG2, tGenRareG1, tGenRareG2;
-	double tDensePrim1, tDensePrim2, tDenseKruskal1, tDenseKruskal2, tDenseBoruvka1, tDenseBoruvka2;
+	double tDensePrim1, tDensePrim2, tDenseKruskal1=0, tDenseKruskal2=0, tDenseBoruvka1, tDenseBoruvka2;
 	double tRarePrim1, tRarePrim2, tRareKruskal1, tRareKruskal2, tRareBoruvka1, tRareBoruvka2;
 	
 	double dGenDense, dGenRare, dDensePrim, dDenseKruskal, dDenseBoruvka, dRarePrim, dRareKruskal, dRareBoruvka;
 
-	tGenRareG1 = clock();
-	generateRareGraph(n, sm);
-	tGenRareG2 = clock();
 
 	tGenDenseG1 = clock();
 	generateDenseGraph(n, m);
 	tGenGenseG2 = clock();
 
-	print_edges();
+
+	//print_edges();
 
 	printf("\n");
 	printf("Search MST Edges of Graph from the dense graph is ");
@@ -33,13 +31,22 @@ int main() {
 	tDensePrim1 = clock();
 	find_msf_Prim(weightMatr, connectivityMatr, tDensePrim2);
 
-	// Working Kruskal alg at Dense Graph
-	tDenseKruskal1 = clock();
-	find_msf_Kruskal(edges, m, tDenseKruskal2);
+	//// Working Kruskal alg at Dense Graph
+	//tDenseKruskal1 = clock();
+	//find_msf_Kruskal(edges, m, tDenseKruskal2);
 
 	// Working Boruvka alg at Rare Graph
 	tDenseBoruvka1 = clock();
 	find_msf_Boruvka(edges, m, tDenseBoruvka2);
+
+	finalizeArray(&weightMatr, &connectivityMatr);
+	delete[]edges;
+
+	printf("\n");
+
+	tGenRareG1 = clock();
+	generateRareGraph(n, sm);
+	tGenRareG2 = clock();
 
 	printf("\n");
 	printf("Search MST Edges of Graph from the dense graph is ");
@@ -56,6 +63,9 @@ int main() {
 	tRareBoruvka1 = clock();
 	find_msf_Boruvka(s_edges, sm, tRareBoruvka2);
 
+	finalizeArray(&s_weightMatr, &s_connectivityMatr);
+	delete[]s_edges;
+
 	dGenDense = (tGenGenseG2 - tGenDenseG1); dGenRare = (tGenRareG2 - tGenRareG1);
 	dDensePrim = (tDensePrim2 - tDensePrim1); dDenseKruskal = (tDenseKruskal2 - tDenseKruskal1); dDenseBoruvka = (tDenseBoruvka2 - tDenseBoruvka1);
 	dRarePrim = (tRarePrim2 - tRarePrim1); dRareKruskal = (tRareKruskal2 - tRareKruskal1); dRareBoruvka = (tRareBoruvka2 - tRareBoruvka1);
@@ -65,7 +75,7 @@ int main() {
 	printf("Search time MST using alg Prima for the dense graph %f ms.\nSearch time MST using alg Kruskal for the dense graph %f ms.\nSearch time MST using alg Boruvka for the dense graph %f ms.\n", dDensePrim, dDenseKruskal, dDenseBoruvka);
 	printf("Search time MST using alg Prima for the rare graph %f ms.\nSearch time MST using alg Kruskal for the rare graph %f ms.\nSearch time MST using alg Boruvka for the rare graph %f ms.\n", dRarePrim, dRareKruskal, dRareBoruvka);
 
-	finalize();
+	//finalize();
 	system("pause");
 	return 0;
 }

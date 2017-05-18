@@ -27,10 +27,7 @@ int n;   // Number of vertices in the main graph
 int m;   //Number of edges in the dense graph
 int sm;  //Number of edges in the rare graph
 
-
-
-
-edge_s * resultPrim;
+edge_s * resultPrim; 
 edge_s * resultKruskal;
 edge_s * resultBoruvka;
 
@@ -111,9 +108,11 @@ int EdgeInGraph(int A, int B, int end, edge_s * ed)//is Exits of edge
 
 //generate edges of graph
 void generateDenseGraph(int n, int &m){
+	double nf = n;
 	int activ_m = 0;
-	int weight = 0;
-	int const kf = n*(n - 1) / 2;
+	int weight = 0;									// (n^2)*(8/18)
+	double kf = (nf / (nf - 1))*(8.0 / 9.0); // The ratio of the number of edges in a dense graph to the number of edges in a complete graph of "n" vertices
+	int const weightKf = n*(n - 1) / 2; 
 
 	weightMatr = new int*[n];
 	connectivityMatr = new bool*[n];
@@ -132,19 +131,19 @@ void generateDenseGraph(int n, int &m){
 
 
 	for (int i = 1; i < n; i++){
-		weight = rand() % kf;
+		weight = rand() % weightKf;
 		connectivityMatr[0][i] = true;
 		weightMatr[0][i] = weight;
 		activ_m++;
 	}
 
 	int val = 0;
-
+	kf *= 100;
 	for (int i = 1; i < n; i++){
 		for (int j = i + 1; j < n; j++){
-			val = rand() % 3;
-			weight = rand() % kf;
-			if ((bool)val){
+			val = rand() % 100 + 2;
+			weight = rand() % weightKf;
+			if (val < kf){
 				connectivityMatr[i][j] = true;
 				weightMatr[i][j] = weight;
 				activ_m++;
@@ -166,6 +165,7 @@ void generateDenseGraph(int n, int &m){
 
 
 	m = activ_m;
+	printf("The number of generated edges in the dense graph: %u\n", m);
 	//for (int i = 0; i < n; i++){
 	//	for (int j = 0; j < n; j++){
 	//		cout << connectivityMatr[i][j];
@@ -200,9 +200,11 @@ void generateDenseGraph(int n, int &m){
 }
 
 void generateRareGraph(int n, int &m){
+	double nf = n;
 	int activ_m = 0;
-	int weight = 0;
-	int const kf = n*(n - 1) / 2;
+	int weight = 0;				// 5*n
+	double kf = 10 / (nf - 1); // The ratio of the number of edges in a dense graph to the number of edges in a complete graph of "n" vertices
+	int const weightKf = n*(n - 1) / 2;
 
 	s_weightMatr = new int*[n];
 	s_connectivityMatr = new bool*[n];
@@ -221,18 +223,19 @@ void generateRareGraph(int n, int &m){
 
 
 	for (int i = 1; i < n; i++){
-		weight = rand() % kf;
+		weight = rand() % weightKf;
 		s_connectivityMatr[0][i] = true;
 		s_weightMatr[0][i] = weight;
 		activ_m++;
 	}
 
 	int val = 0;
+	kf *= 100;
 	for (int i = 1; i < n; i++){
 		for (int j = i + 1; j < n; j++){
-			val = rand() % 150;
-			weight = rand() % kf;
-			if (!((bool)val)){
+			val = rand() % 100 + 1;
+			weight = rand() % weightKf;
+			if (val < kf){
 				s_connectivityMatr[i][j] = true;
 				s_weightMatr[i][j] = weight;
 				activ_m++;
@@ -254,6 +257,7 @@ void generateRareGraph(int n, int &m){
 
 
 	m = activ_m;
+	printf("The number of generated edges in the rare graph: %u\n", m);
 	//for (int i = 0; i < n; i++){
 	//	for (int j = 0; j < n; j++){
 	//		cout << s_connectivityMatr[i][j];
@@ -338,6 +342,14 @@ void generateSparseGraph(int n, int &m){ // function has become outdated
 }
 
 
+void finalizeArray(int *** weightMatr, bool *** connectivityMatr){
+	for (int i = 0; i < n; i++){
+		delete[](*weightMatr)[i];
+		delete[](*connectivityMatr)[i];
+	}
+	delete[]*weightMatr;
+	delete[]*connectivityMatr;
+}
 void finalize() {
 	delete[]edges;
 	delete[]s_edges;
