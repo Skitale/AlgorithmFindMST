@@ -1,5 +1,5 @@
 #pragma once
-//#define DEBUG
+#define DEBUG
 #include "AlgKruskal.h"
 #include "AlgPrima.h"
 #include"AlgBoruvka.h"
@@ -9,7 +9,7 @@ int main() {
 	srand(time(0));
 	printf("Enter number of vertices of Graph: ");
 	cin >> n;
-
+	_heapchk();
 	double tGenDenseG1, tGenGenseG2, tGenRareG1, tGenRareG2;
 	double tDensePrim1, tDensePrim2, tDenseKruskal1=0, tDenseKruskal2=0, tDenseBoruvka1, tDenseBoruvka2;
 	double tRarePrim1, tRarePrim2, tRareKruskal1, tRareKruskal2, tRareBoruvka1, tRareBoruvka2;
@@ -32,12 +32,14 @@ int main() {
 	find_msf_Prim(weightMatr, connectivityMatr, tDensePrim2);
 
 	//// Working Kruskal alg at Dense Graph
-	//tDenseKruskal1 = clock();
-	//find_msf_Kruskal(edges, m, tDenseKruskal2);
+	tDenseKruskal1 = clock();
+	find_msf_Kruskal(edges, m, tDenseKruskal2);
 
-	// Working Boruvka alg at Rare Graph
+	// Working Boruvka alg at Dense Graph
 	tDenseBoruvka1 = clock();
 	find_msf_Boruvka(edges, m, tDenseBoruvka2);
+
+
 
 	finalizeArray(&weightMatr, &connectivityMatr);
 	delete[]edges;
@@ -55,13 +57,13 @@ int main() {
 	tRarePrim1 = clock();
 	find_msf_Prim(s_weightMatr, s_connectivityMatr, tRarePrim2);
 
-	// Working Kruskal alg at Rare Graph
-	tRareKruskal1 = clock();
-	find_msf_Kruskal(s_edges, sm, tRareKruskal2);
-
 	// Working Boruvka alg at Rare Graph
 	tRareBoruvka1 = clock();
 	find_msf_Boruvka(s_edges, sm, tRareBoruvka2);
+
+	// Working Kruskal alg at Rare Graph
+	tRareKruskal1 = clock();
+	find_msf_Kruskal(s_edges, sm, tRareKruskal2);
 
 	finalizeArray(&s_weightMatr, &s_connectivityMatr);
 	delete[]s_edges;

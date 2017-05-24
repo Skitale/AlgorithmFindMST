@@ -44,13 +44,13 @@ void find_msf_Boruvka(edge_s * edges, const int m, double &finTime) {
 			}
 		}
 	}
-
+	
 	finTime = clock();
 	printf("done! ");
 #ifdef DEBUG
 	print_msf_edges_Boruvka();
 #endif
-	delete[]resultBoruvka;
 	delete[]uf_set;
+	delete[]resultBoruvka;
 }
 

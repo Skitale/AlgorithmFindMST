@@ -38,7 +38,7 @@ void find_msf_Kruskal(edge_s * edges, const int m, double &finTime) {
 	uf_make();
 
 	int used_edge_index = 0;
-	for (int i = 1; i <= m; i++) {
+	for (int i = 0; i < m; i++) {
 
 		edge_s * min_edge = &edges[used_edge_index++];
 
@@ -59,8 +59,8 @@ void find_msf_Kruskal(edge_s * edges, const int m, double &finTime) {
 #ifdef DEBUG
 	print_msf_edges_kruskal();
 #endif
-	delete[]resultKruskal;
 	delete[]uf_set;
+	delete[]resultKruskal;
 }
 
 
