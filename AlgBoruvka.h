@@ -3,45 +3,12 @@
 
 int msf_edge_count_bor;
 
-
 void print_msf_edges_Boruvka() {
 	printf("Boruvka MSF edges:\n");
 	for (int i = 0; i < msf_edge_count_bor; i++) {
 		printf("(%d,%d) = %d\n", resultBoruvka[i].v, resultBoruvka[i].u, resultBoruvka[i].weight);
 	}
 }
-
-//bool isExist(edge_s * edges, int m, edge_s search){
-//	for (int i = 0; i < m; i++){
-//		if ((edges[i].v == search.v) && (edges[i].u == search.u) || (edges[i].v == search.u) && (edges[i].u == search.v)){
-//			return true;
-//		}
-//	}
-//	return false;
-//}
-
-bool isExist(edge_s * edges, int m, edge_s search){
-	for (int i = 0; i < m; i++){
-		if ((edges[i].u == search.u) || (edges[i].u == search.v) || (edges[i].v == search.u) || (edges[i].v == search.v)){
-			for (int j = 0; j < m; j++){
-				if ((edges[j].u == search.u) || (edges[j].u == search.v) || (edges[j].v == search.u) || (edges[j].v == search.v)){
-					return true;
-				}
-			}
-		}
-	}
-	return false;
-}
-
-bool isExistf(edge_s * edges, int m, edge_s search){
-	for (int i = 0; i < m; i++){
-		if ((edges[i].v == search.v) && (edges[i].u == search.u)){
-			return true;
-		}
-	}
-	return false;
-}
-
 
 void find_msf_Boruvka(edge_s * edges, const int m, double &finTime) {
 	msf_edge_count_bor = 0;

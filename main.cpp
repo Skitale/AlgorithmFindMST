@@ -9,10 +9,10 @@ int main() {
 	srand(time(0));
 	printf("Enter number of vertices of Graph: ");
 	cin >> n;
-	_heapchk();
-	double tGenDenseG1, tGenGenseG2, tGenRareG1, tGenRareG2;
-	double tDensePrim1, tDensePrim2, tDenseKruskal1=0, tDenseKruskal2=0, tDenseBoruvka1=0, tDenseBoruvka2=0;
-	double tRarePrim1, tRarePrim2, tRareKruskal1, tRareKruskal2, tRareBoruvka1, tRareBoruvka2;
+
+	double tGenDenseG1=0, tGenGenseG2=0, tGenRareG1=0, tGenRareG2=0;
+	double tDensePrim1=0, tDensePrim2, tDenseKruskal1=0, tDenseKruskal2=0, tDenseBoruvka1=0, tDenseBoruvka2=0;
+	double tRarePrim1=0, tRarePrim2=0, tRareKruskal1=0, tRareKruskal2=0, tRareBoruvka1=0, tRareBoruvka2=0;
 	
 	double dGenDense, dGenRare, dDensePrim, dDenseKruskal, dDenseBoruvka, dRarePrim, dRareKruskal, dRareBoruvka;
 
