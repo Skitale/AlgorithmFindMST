@@ -1,5 +1,5 @@
 #pragma once
-#define DEBUG
+//#define DEBUG
 #include "AlgKruskal.h"
 #include "AlgPrima.h"
 #include"AlgBoruvka.h"
@@ -11,7 +11,7 @@ int main() {
 	cin >> n;
 	_heapchk();
 	double tGenDenseG1, tGenGenseG2, tGenRareG1, tGenRareG2;
-	double tDensePrim1, tDensePrim2, tDenseKruskal1=0, tDenseKruskal2=0, tDenseBoruvka1, tDenseBoruvka2;
+	double tDensePrim1, tDensePrim2, tDenseKruskal1=0, tDenseKruskal2=0, tDenseBoruvka1=0, tDenseBoruvka2=0;
 	double tRarePrim1, tRarePrim2, tRareKruskal1, tRareKruskal2, tRareBoruvka1, tRareBoruvka2;
 	
 	double dGenDense, dGenRare, dDensePrim, dDenseKruskal, dDenseBoruvka, dRarePrim, dRareKruskal, dRareBoruvka;
@@ -31,15 +31,13 @@ int main() {
 	tDensePrim1 = clock();
 	find_msf_Prim(weightMatr, connectivityMatr, tDensePrim2);
 
-	//// Working Kruskal alg at Dense Graph
-	tDenseKruskal1 = clock();
-	find_msf_Kruskal(edges, m, tDenseKruskal2);
-
 	// Working Boruvka alg at Dense Graph
 	tDenseBoruvka1 = clock();
 	find_msf_Boruvka(edges, m, tDenseBoruvka2);
 
-
+	////// Working Kruskal alg at Dense Graph
+	//tDenseKruskal1 = clock();
+	//find_msf_Kruskal(edges, m, tDenseKruskal2);
 
 	finalizeArray(&weightMatr, &connectivityMatr);
 	delete[]edges;

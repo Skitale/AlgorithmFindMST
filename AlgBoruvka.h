@@ -11,35 +11,95 @@ void print_msf_edges_Boruvka() {
 	}
 }
 
+//bool isExist(edge_s * edges, int m, edge_s search){
+//	for (int i = 0; i < m; i++){
+//		if ((edges[i].v == search.v) && (edges[i].u == search.u) || (edges[i].v == search.u) && (edges[i].u == search.v)){
+//			return true;
+//		}
+//	}
+//	return false;
+//}
+
+bool isExist(edge_s * edges, int m, edge_s search){
+	for (int i = 0; i < m; i++){
+		if ((edges[i].u == search.u) || (edges[i].u == search.v) || (edges[i].v == search.u) || (edges[i].v == search.v)){
+			for (int j = 0; j < m; j++){
+				if ((edges[j].u == search.u) || (edges[j].u == search.v) || (edges[j].v == search.u) || (edges[j].v == search.v)){
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+
+bool isExistf(edge_s * edges, int m, edge_s search){
+	for (int i = 0; i < m; i++){
+		if ((edges[i].v == search.v) && (edges[i].u == search.u)){
+			return true;
+		}
+	}
+	return false;
+}
+
+
 void find_msf_Boruvka(edge_s * edges, const int m, double &finTime) {
 	msf_edge_count_bor = 0;
 	resultBoruvka = new edge_s[n - 1];
+	//cout << "--------\n";
+	//for (int i = 0; i < m; i++) {
+	//	printf("(%d,%d) = %d\n", edges[i].v, edges[i].u, edges[i].weight);
+	//}
+	//cout << "--------\n";
 	
 	uf_make();
-
-	int * min_edges_weight = new int[m];
-	for (size_t i = 0; i < m; i++)
-	{
-		min_edges_weight[i] = INT_MAX;
-	}
-
+	int k = 0;
+	edge_s * min_edges_weight = new edge_s[n];
+	
 	while (msf_edge_count_bor < n - 1)
 	{
+		for (int i = 0; i < n; i++){
+			min_edges_weight[i] = { -1, -1, INT_MAX };
+		}
+
 		for (size_t i = 0; i < m; i++)
 		{
-			if (min_edges_weight[i] > edges[i].weight) 
-			{
-				min_edges_weight[i] = edges[i].weight;
+			int v = edges[i].v;
+			int u = edges[i].u;
+			u_node * v_node = uf_find(uf_set + v);
+			u_node * u_node = uf_find(uf_set + u);
+			if (v_node == u_node) continue;
 
-				int v = edges[i].v;
-				int u = edges[i].u;
+			int comp = v_node - uf_set;
+			if (min_edges_weight[comp].weight > edges[i].weight){
+				min_edges_weight[comp] = edges[i];
+			}
+
+			comp = u_node - uf_set;
+			if (min_edges_weight[comp].weight > edges[i].weight){
+				min_edges_weight[comp] = edges[i];
+			}		
+		}
+		/*cout << "\n";
+		for (int i = 0; i < m; i++) {
+			printf("(%d,%d) = %d\n", edges[i].v, edges[i].u, edges[i].weight);
+		}*/
+
+		//for (int i = 0; i < n; i++){
+		//	cout << " i="<< i << " v=" << min_edges_weight[i].v << "  u=" << min_edges_weight[i].u << "  w=" << min_edges_weight[i].weight << endl;
+		//}
+		//cout << "\n";
+
+		for (int k = 0; k < n; k++){
+			if (min_edges_weight[k].weight != INT_MAX){
+				int v = min_edges_weight[k].v;
+				int u = min_edges_weight[k].u;
 				u_node * v_node = uf_find(uf_set + v);
 				u_node * u_node = uf_find(uf_set + u);
 
-				if (v_node != u_node) 
-				{
-					resultBoruvka[msf_edge_count_bor++] = edges[i];
+				if (v_node != u_node){
 					uf_union(v_node, u_node);
+					resultBoruvka[msf_edge_count_bor++] = min_edges_weight[k];
 				}
 			}
 		}
@@ -50,6 +110,7 @@ void find_msf_Boruvka(edge_s * edges, const int m, double &finTime) {
 #ifdef DEBUG
 	print_msf_edges_Boruvka();
 #endif
+	delete[]min_edges_weight;
 	delete[]uf_set;
 	delete[]resultBoruvka;
 }
