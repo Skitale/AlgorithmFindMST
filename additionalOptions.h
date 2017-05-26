@@ -202,8 +202,8 @@ void generateDenseGraph(int n, int &m){
 void generateRareGraph(int n, int &m){
 	double nf = n;
 	int activ_m = 0;
-	int weight = 0;				// 10*n
-	double kf = 20 / (nf - 1); // The ratio of the number of edges in a dense graph to the number of edges in a complete graph of "n" vertices
+	int weight = 0;				// 125*n
+	double kf = 250 / (nf - 1); // The ratio of the number of edges in a dense graph to the number of edges in a complete graph of "n" vertices
 	int const weightKf = n*(n - 1) / 2;
 
 	s_weightMatr = new int*[n];
@@ -233,7 +233,7 @@ void generateRareGraph(int n, int &m){
 	kf *= 100;
 	for (int i = 1; i < n; i++){
 		for (int j = i + 1; j < n; j++){
-			val = rand() % 100 + 1;
+			val = rand() % 100 + 2;
 			weight = rand() % weightKf;
 			if (val < kf){
 				s_connectivityMatr[i][j] = true;
@@ -255,6 +255,38 @@ void generateRareGraph(int n, int &m){
 		s_connectivityMatr[i][i] = false;
 	}
 
+
+	
+	if (m < n){
+		activ_m = 0;
+		for (int i = 1; i < n; i++){
+			weight = rand() % weightKf;
+			s_connectivityMatr[0][i] = true;
+			s_weightMatr[0][i] = weight;
+			activ_m++;
+		}
+
+		int val = 0;
+		kf += 5;
+		for (int i = 1; i < n; i++){
+			for (int j = i + 1; j < n; j++){
+				val = rand() % 100 + 2;
+				weight = rand() % weightKf;
+				if (val < kf){
+					s_connectivityMatr[i][j] = true;
+					s_weightMatr[i][j] = weight;
+					activ_m++;
+				}
+			}
+		}
+
+		for (int i = 0; i < n; i++){
+			for (int j = i + 1; j < n; j++){
+				s_weightMatr[j][i] = s_weightMatr[i][j];
+				s_connectivityMatr[j][i] = s_connectivityMatr[i][j];
+			}
+		}
+	}
 
 	m = activ_m;
 	printf("The number of generated edges in the rare graph: %u\n", m);

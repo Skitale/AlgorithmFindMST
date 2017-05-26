@@ -73,6 +73,9 @@ void find_msf_Boruvka(edge_s * edges, const int m, double &finTime) {
 	}
 	
 	finTime = clock();
+
+	std::qsort(resultBoruvka, msf_edge_count_bor, sizeof(edge_s), compare_edges);
+
 	printf("done! ");
 #ifdef DEBUG
 	print_msf_edges_Boruvka();

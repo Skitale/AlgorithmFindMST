@@ -5,10 +5,11 @@
 #include"AlgBoruvka.h"
 #include <ctime>
 
-int main() {
+int main(int argc, char** argv) {
 	srand(time(0));
 	printf("Enter number of vertices of Graph: ");
 	cin >> n;
+	//n = atoi(argv[1]);
 
 	double tGenDenseG1=0, tGenGenseG2=0, tGenRareG1=0, tGenRareG2=0;
 	double tDensePrim1=0, tDensePrim2, tDenseKruskal1=0, tDenseKruskal2=0, tDenseBoruvka1=0, tDenseBoruvka2=0;
@@ -16,11 +17,9 @@ int main() {
 	
 	double dGenDense, dGenRare, dDensePrim, dDenseKruskal, dDenseBoruvka, dRarePrim, dRareKruskal, dRareBoruvka;
 
-
 	tGenDenseG1 = clock();
 	generateDenseGraph(n, m);
 	tGenGenseG2 = clock();
-
 
 	//print_edges();
 
@@ -31,15 +30,16 @@ int main() {
 	tDensePrim1 = clock();
 	find_msf_Prim(weightMatr, connectivityMatr, tDensePrim2);
 
+	finalizeArray(&weightMatr, &connectivityMatr);
+
 	// Working Boruvka alg at Dense Graph
 	tDenseBoruvka1 = clock();
 	find_msf_Boruvka(edges, m, tDenseBoruvka2);
 
-	////// Working Kruskal alg at Dense Graph
-	//tDenseKruskal1 = clock();
-	//find_msf_Kruskal(edges, m, tDenseKruskal2);
+	//// Working Kruskal alg at Dense Graph
+	tDenseKruskal1 = clock();
+	find_msf_Kruskal(edges, m, tDenseKruskal2);
 
-	finalizeArray(&weightMatr, &connectivityMatr);
 	delete[]edges;
 
 	printf("\n");
@@ -55,6 +55,8 @@ int main() {
 	tRarePrim1 = clock();
 	find_msf_Prim(s_weightMatr, s_connectivityMatr, tRarePrim2);
 
+	finalizeArray(&s_weightMatr, &s_connectivityMatr);
+
 	// Working Boruvka alg at Rare Graph
 	tRareBoruvka1 = clock();
 	find_msf_Boruvka(s_edges, sm, tRareBoruvka2);
@@ -63,7 +65,6 @@ int main() {
 	tRareKruskal1 = clock();
 	find_msf_Kruskal(s_edges, sm, tRareKruskal2);
 
-	finalizeArray(&s_weightMatr, &s_connectivityMatr);
 	delete[]s_edges;
 
 	dGenDense = (tGenGenseG2 - tGenDenseG1); dGenRare = (tGenRareG2 - tGenRareG1);
