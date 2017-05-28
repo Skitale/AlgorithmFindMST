@@ -203,7 +203,8 @@ void generateRareGraph(int n, int &m){
 	double nf = n;
 	int activ_m = 0;
 	int weight = 0;				// 125*n
-	double kf = 250 / (nf - 1); // The ratio of the number of edges in a dense graph to the number of edges in a complete graph of "n" vertices
+	//double kf = 250 / (nf - 1); // The ratio of the number of edges in a dense graph to the number of edges in a complete graph of "n" vertices
+	double kf = nf / ( (nf - 1) * 15 );
 	int const weightKf = n*(n - 1) / 2;
 
 	s_weightMatr = new int*[n];
