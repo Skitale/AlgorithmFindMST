@@ -141,9 +141,9 @@ void generateDenseGraph(int n, int &m){
 	kf *= 100;
 	for (int i = 1; i < n; i++){
 		for (int j = i + 1; j < n; j++){
-			val = rand() % 100 + 2;
+			val = rand() % 100 + 1;
 			weight = rand() % weightKf;
-			if (val < kf){
+			if (val <= kf){
 				connectivityMatr[i][j] = true;
 				weightMatr[i][j] = weight;
 				activ_m++;
@@ -233,9 +233,9 @@ void generateRareGraph(int n, int &m){
 	kf *= 100;
 	for (int i = 1; i < n; i++){
 		for (int j = i + 1; j < n; j++){
-			val = rand() % 100 + 2;
+			val = rand() % 100 + 1;
 			weight = rand() % weightKf;
-			if (val < kf){
+			if (val <= kf){
 				s_connectivityMatr[i][j] = true;
 				s_weightMatr[i][j] = weight;
 				activ_m++;
@@ -253,39 +253,6 @@ void generateRareGraph(int n, int &m){
 	for (int i = 0; i < n; i++){
 		s_weightMatr[i][i] = -1;
 		s_connectivityMatr[i][i] = false;
-	}
-
-
-	
-	if (m < n){
-		activ_m = 0;
-		for (int i = 1; i < n; i++){
-			weight = rand() % weightKf;
-			s_connectivityMatr[0][i] = true;
-			s_weightMatr[0][i] = weight;
-			activ_m++;
-		}
-
-		int val = 0;
-		kf += 5;
-		for (int i = 1; i < n; i++){
-			for (int j = i + 1; j < n; j++){
-				val = rand() % 100 + 2;
-				weight = rand() % weightKf;
-				if (val < kf){
-					s_connectivityMatr[i][j] = true;
-					s_weightMatr[i][j] = weight;
-					activ_m++;
-				}
-			}
-		}
-
-		for (int i = 0; i < n; i++){
-			for (int j = i + 1; j < n; j++){
-				s_weightMatr[j][i] = s_weightMatr[i][j];
-				s_connectivityMatr[j][i] = s_connectivityMatr[i][j];
-			}
-		}
 	}
 
 	m = activ_m;
